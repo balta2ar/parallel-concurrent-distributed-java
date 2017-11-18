@@ -1,9 +1,8 @@
 package edu.coursera.parallel;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -46,7 +45,12 @@ public final class StudentAnalytics {
      */
     public double averageAgeOfEnrolledStudentsParallelStream(
             final Student[] studentArray) {
-        throw new UnsupportedOperationException();
+        return Stream.of(studentArray)
+            .parallel()
+            .filter(s -> s.checkIsCurrent())
+            .mapToDouble(s -> s.getAge())
+            .average()
+            .getAsDouble();
     }
 
     /**
@@ -71,7 +75,7 @@ public final class StudentAnalytics {
         for (Student s : inactiveStudents) {
             if (nameCounts.containsKey(s.getFirstName())) {
                 nameCounts.put(s.getFirstName(),
-                        new Integer(nameCounts.get(s.getFirstName()) + 1));
+                    new Integer(nameCounts.get(s.getFirstName()) + 1));
             } else {
                 nameCounts.put(s.getFirstName(), 1);
             }
@@ -100,7 +104,22 @@ public final class StudentAnalytics {
      */
     public String mostCommonFirstNameOfInactiveStudentsParallelStream(
             final Student[] studentArray) {
-        throw new UnsupportedOperationException();
+        // Build a mapping of: FirstName => Conut
+        Map<String, Long> table = Stream.of(studentArray)
+            .parallel()
+            .map(s -> s.getFirstName())
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        // Find the FirstName with the largest Count
+        String result = table.entrySet()
+            .stream()
+            .parallel()
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .findFirst()
+            .get()
+            .getKey();
+
+        return result;
     }
 
     /**
@@ -136,6 +155,24 @@ public final class StudentAnalytics {
      */
     public int countNumberOfFailedStudentsOlderThan20ParallelStream(
             final Student[] studentArray) {
-        throw new UnsupportedOperationException();
+        return (int) Stream.of(studentArray)
+            .parallel()
+            .filter(s -> (s.getAge() > 20) && (!s.checkIsCurrent() && (s.getGrade() < 65)))
+            .count();
+    }
+
+    public static void main(String[] args) {
+        System.out.println("START");
+        Student[] students = new Student[3];
+        students[0] = new Student("First", "Last1", 20, 5, false);
+        students[1] = new Student("First", "Last2", 20, 5, false);
+        students[2] = new Student("Second", "Last3", 20, 5, false);
+
+        StudentAnalytics sa = new StudentAnalytics();
+        String imperative = sa.mostCommonFirstNameOfInactiveStudentsImperative(students);
+        String streaming = sa.mostCommonFirstNameOfInactiveStudentsParallelStream(students);
+        System.out.println("imperative " + imperative + ", streming " + streaming);
+
+        System.out.println("END");
     }
 }
