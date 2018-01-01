@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 public class OneDimAveragingPhaserTest extends TestCase {
     // Number of times to repeat each test, for consistent timing results.
     final static private int niterations = 12000;
+//    final static private int niterations = 10;
 
     private static int getNCores() {
         String ncoresStr = System.getenv("COURSERA_GRADER_NCORES");
@@ -122,6 +123,7 @@ public class OneDimAveragingPhaserTest extends TestCase {
     public void testFuzzyBarrier() {
         final double expected = 1.1;
         final double speedup = parTestHelper(4 * 1024 * 1024, getNCores() * 16);
+//        final double speedup = parTestHelper(1024, getNCores());
         final String errMsg = String.format("It was expected that the fuzzy barrier parallel implementation would " +
                 "run %fx faster than the barrier implementation, but it only achieved %fx speedup", expected, speedup);
         assertTrue(errMsg, speedup >= expected);
