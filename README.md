@@ -10,7 +10,7 @@ Preparation week. The purpose is to test your environment. No actual task to do.
 
 ### Week 1 ForkJoin
 
-In this week we need to calculate reciprocal array sum. We're using Java's ForkJoin framework to parallellize our calculations. There are different ways to interact with the ForkJoin framework, and in this week we're extending `RecursiveAction` and overriding `compute()` method. In `compute()` method we determine current size of the current range of the that we need to process. If it's small enough, we are processing it immediately. Otherwise, we divide it into two parts (left and right) and process them recursively.
+In this week we need to calculate reciprocal array sum. We're using Java's ForkJoin framework to parallelize our calculations. There are different ways to interact with the ForkJoin framework, and in this week we're extending `RecursiveAction` and overriding `compute()` method. In `compute()` method we determine current size of the current range of the that we need to process. If it's small enough, we are processing it immediately. Otherwise, we divide it into two parts (left and right) and process them recursively.
 
 The minimal threshold value determines how many ForJoin tasks we will totally create. Notice that I didn't manage to pass the tests locally and I didn't submit the solution to the Coursera grader. Many students reported the same problem on the forums. Still, there was a significant improvement over the linear execution, just not as big as expected by the creators of the homework.
 
