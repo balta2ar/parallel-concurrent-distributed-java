@@ -36,6 +36,10 @@ This illustrates that task 2 depends on completion of tasks 1 and 3.
 
 ## Concurrent programming in Java
 
+### Week 1 Locks
+
+In this week we were introduced to locks, the basic primitive for synchronization. Java's `synchronized` keyword is pretty much the same lock that guards the whole method. Lock, however, can be made more granular. In this week we applied `ReadWrite` lock to benefit from the fact that read only methods can have concurrent access to the data, while read-and-write methods should be guarded by a lock.
+
 ## Distributed programming in Java
 
 ## Author
