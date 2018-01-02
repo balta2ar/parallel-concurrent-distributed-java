@@ -40,7 +40,23 @@ This illustrates that task 2 depends on completion of tasks 1 and 3.
 
 In this week we were introduced to locks, the basic primitive for synchronization. Java's `synchronized` keyword is pretty much the same lock that guards the whole method. Lock, however, can be made more granular. In this week we applied `ReadWrite` lock to benefit from the fact that read only methods can have concurrent access to the data, while read-and-write methods should be guarded by a lock.
 
+### Week 2
+
+This week we are introduced to the concepts of critical sections, atomic variables and isolation. Being a more high-level synchronization construct, isolation allows for simpler semantics providing the same or even better level of efficiency.
+
+### Week 3
+
+### Week 4
+
 ## Distributed programming in Java
+
+### Week 1
+
+### Week 2
+
+### Week 3
+
+### Week 4
 
 ## Author
 

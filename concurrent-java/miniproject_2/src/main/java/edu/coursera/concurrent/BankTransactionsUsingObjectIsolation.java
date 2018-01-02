@@ -19,6 +19,9 @@ public final class BankTransactionsUsingObjectIsolation
          * BankTransactionsUsingGlobalIsolation. Keep in mind that isolation
          * must be applied to both src and dst.
          */
-        throw new UnsupportedOperationException();
+//        throw new UnsupportedOperationException();
+        isolated(src, dst, () -> {
+            src.performTransfer(amount, dst);
+        });
     }
 }
