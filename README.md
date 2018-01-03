@@ -1,6 +1,6 @@
 # Parallel, Concurrent and Distributed programming in Java
 
-These are my solutions to these three courses. Below I added short comments to each week so that I remember better what it's about and that you, the reader, have a better idea too.
+These are my solutions to these three courses. Below I added short comments to each week so that I remember better what it's about and that you, the reader, could have a better idea too.
 
 ## Parallel programming in Java
 
@@ -40,11 +40,11 @@ This illustrates that task 2 depends on completion of tasks 1 and 3.
 
 In this week we were introduced to locks, the basic primitive for synchronization. Java's `synchronized` keyword is pretty much the same lock that guards the whole method. Lock, however, can be made more granular. In this week we applied `ReadWrite` lock to benefit from the fact that read only methods can have concurrent access to the data, while read-and-write methods should be guarded by a lock.
 
-### Week 2
+### Week 2 Isolation
 
-This week we are introduced to the concepts of critical sections, atomic variables and isolation. Being a more high-level synchronization construct, isolation allows for simpler semantics providing the same or even better level of efficiency.
+This week we are introduced to the concepts of critical sections, atomic variables and isolation. Being a more high-level synchronization construct, isolation allows for simpler semantics providing the same or even better level of efficiency. To make things faster in the homework, we use PDCP library and object-level isolation, not global isolation.
 
-### Week 3
+### Week 3 Actors
 
 This week we are introduced to the concept of actors. To explain it in my own words, actors are independent units of computation that you can communicate with using `send` method. In the miniproject we need to implement the famous Sieve of Eratosthenes using actors. To do that, we create a chain of actors that one-by-one check whether a given number is divisible by the range of numbers, assigned to the given actor. To make it more efficient, a single actor is assigned a bunch of numbers, e.g. 1000, not just one.
 
