@@ -46,6 +46,8 @@ This week we are introduced to the concepts of critical sections, atomic variabl
 
 ### Week 3
 
+This week we are introduced to the concept of actors. To explain it in my own words, actors are independent units of computation that you can communicate with using `send` method. In the miniproject we need to implement the famous Sieve of Eratosthenes using actors. To do that, we create a chain of actors that one-by-one check whether a given number is divisible by the range of numbers, assigned to the given actor. To make it more efficient, a single actor is assigned a bunch of numbers, e.g. 1000, not just one.
+
 ### Week 4
 
 ## Distributed programming in Java

@@ -34,6 +34,7 @@ public class SieveTest extends TestCase {
 
     public void testActorSieveOneHundredThousand() throws InterruptedException {
         final int limit = 100_000;
+//        final int limit = 5_000;
         final int ref = new SieveSequential().countPrimes(limit);
 
         long prev = -1;
