@@ -8,6 +8,7 @@ import edu.coursera.concurrent.boruvka.Component;
 import java.util.Queue;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A parallel implementation of Boruvka's algorithm to compute a Minimum
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 public final class ParBoruvka extends AbstractBoruvka<ParBoruvka.ParComponent> {
 
+//    static private ReentrantLock solutionLock = new ReentrantLock();
     /**
      * Constructor.
      */
@@ -28,7 +30,48 @@ public final class ParBoruvka extends AbstractBoruvka<ParBoruvka.ParComponent> {
     @Override
     public void computeBoruvka(final Queue<ParComponent> nodesLoaded,
             final SolutionToBoruvka<ParComponent> solution) {
-        throw new UnsupportedOperationException();
+//        throw new UnsupportedOperationException();
+
+        ParComponent current = null;
+        while (!nodesLoaded.isEmpty()) {
+            current = nodesLoaded.poll();
+
+            // Empty queue or the component is acquired by another thread.
+            if (current == null || !current.lock.tryLock()) {
+                continue;
+            }
+
+            // Already processed.
+            if (current.isDead) {
+                current.lock.unlock();
+                continue;
+            }
+
+            // Maybe the graph is processed, set the solution.
+            Edge<ParComponent> minEdge = current.getMinEdge();
+            if (minEdge == null) {
+                current.lock.unlock();
+
+//                solutionLock.lock();
+                solution.setSolution(current);
+                break;
+            }
+
+            // Process current component.
+            final ParComponent other = minEdge.getOther(current);
+            if (!other.lock.tryLock()) {
+                current.lock.unlock();
+                nodesLoaded.add(current);
+                continue;
+            }
+
+            other.isDead = true;
+            current.merge(other, minEdge.weight());
+            current.lock.unlock();
+            other.lock.unlock();
+
+            nodesLoaded.add(current);
+        }
     }
 
     /**
@@ -42,6 +85,7 @@ public final class ParBoruvka extends AbstractBoruvka<ParBoruvka.ParComponent> {
          *  it.
          */
         public final int nodeId;
+        public final ReentrantLock lock = new ReentrantLock();
 
         /**
          * List of edges attached to this component, sorted by weight from least

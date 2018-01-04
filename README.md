@@ -88,6 +88,11 @@ assigned a bunch of numbers, e.g. 1000, not just one.
 
 ### Week 4
 
+This week we are introduced to concurrent data structures. In the miniproject we
+need to implement Boruvka's algorithm that builds Minimum Weighted Spanning Tree
+(MST). The implementation should use granular locks (one per node) to secure
+access from multiple threads.
+
 ## Distributed programming in Java
 
 ### Week 1
