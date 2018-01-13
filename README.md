@@ -97,7 +97,14 @@ access from multiple threads.
 
 ### Week 1
 
+In this week we need to calculate PageRank using Spark tools to split data and
+process it by chunks, a more advanced Map-Reduce model.
+
 ### Week 2
+
+In this week we are introduced to the concept of client-server networking,
+specifically to sockets. We need to implement a simple file server that serves
+file over a socket by HTTP protocol.
 
 ### Week 3
 

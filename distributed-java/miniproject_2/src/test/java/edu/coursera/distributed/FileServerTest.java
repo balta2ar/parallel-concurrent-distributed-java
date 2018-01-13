@@ -81,7 +81,7 @@ public class FileServerTest extends TestCase {
         final ServerSocket socket = new ServerSocket(port);
         socket.setReuseAddress(true);
         final PCDPFilesystem fs = getFilesystem();
-        
+
         Runnable runner = new Runnable () {
             @Override
             public void run() {
