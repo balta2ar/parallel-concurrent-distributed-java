@@ -95,20 +95,25 @@ access from multiple threads.
 
 ## Distributed programming in Java
 
-### Week 1
+### Week 1 Distributed Map Reduce
 
 In this week we need to calculate PageRank using Spark tools to split data and
 process it by chunks, a more advanced Map-Reduce model.
 
-### Week 2
+### Week 2 Client-server programming
 
 In this week we are introduced to the concept of client-server networking,
 specifically to sockets. We need to implement a simple file server that serves
 file over a socket by HTTP protocol.
 
-### Week 3
+### Week 3 Message passing
 
-### Week 4
+This week we are using MPI to distribute matrix calculation. We send the whole
+two matrices to all available instances and on each instance we calculate only
+those rows that correspond to the current instance. When we're done, we send
+results back and collect the resulting matrix.
+
+### Week 4 Combining distribution and multi-threading
 
 ## Author
 
