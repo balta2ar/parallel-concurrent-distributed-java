@@ -115,6 +115,9 @@ results back and collect the resulting matrix.
 
 ### Week 4 Combining distribution and multi-threading
 
+This week is basically the same as week 2 but now we need to execute each
+request in a separate thread.
+
 ## Author
 
 2017-2018, Yuri Bochkarev
