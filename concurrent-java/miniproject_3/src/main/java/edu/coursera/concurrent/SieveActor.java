@@ -23,23 +23,20 @@ public final class SieveActor extends Sieve {
     public int countPrimes(final int limit) {
 //        throw new UnsupportedOperationException();
 
-        final SieveActorActor sieveActor = new SieveActorActor();
-        finish(() -> {
-            for (int i = 3; i <= limit; i += 2) {
-                sieveActor.send(i);
+        SieveActorActor sieveActorActor = new SieveActorActor(2);
+        finish(()->{
+            for (int i = 3; i <= limit; i++){
+                sieveActorActor.send(i);
             }
-            sieveActor.send(0);
+            sieveActorActor.send(0);
         });
-
-        // Sum up the number of local primes from each actor in the chain.
-        int totalPrimes = 1;
-        SieveActorActor currentActor = sieveActor;
-        while (currentActor != null) {
-            totalPrimes += currentActor.numLocalPrimes;
-            currentActor = currentActor.nextActor;
+        int result = 0;
+        SieveActorActor current = sieveActorActor;
+        while (current!=null){
+            result += 1;
+            current = current.nextActor;
         }
-
-        return totalPrimes;
+        return result;
     }
 
     /**
@@ -47,11 +44,13 @@ public final class SieveActor extends Sieve {
      * parallel.
      */
     public static final class SieveActorActor extends Actor {
-        static final int MAX_LOCAL_PRIMES = 1000;
-
         SieveActorActor nextActor = null;
-        int[] localPrimes = new int[MAX_LOCAL_PRIMES];
-        int numLocalPrimes = 0;
+        int localPrime; // the only prime this Actor hold
+
+        public SieveActorActor(int localPrime) {
+            this.localPrime = localPrime;
+        }
+
         /**
          * Process a single message sent to this actor.
          *
@@ -61,46 +60,28 @@ public final class SieveActor extends Sieve {
          */
         @Override
         public void process(final Object msg) {
-            int candidate = (int) msg;
+            int candidate = (int)msg;
 
-            // Special message indicating that we should terminate child actors and exit.
-            if (candidate <= 0) {
-                if (nextActor != null) {
+            if (candidate <= 0){
+                if (nextActor != null){
                     nextActor.send(msg);
                 }
-                return;
-            }
-//            throw new UnsupportedOperationException();
-
-            // If it's not locally prime, ignore it.
-            if (!isLocalPrime(candidate)) {
-                return;
             }
 
-            // If there is still room, remember the candidate and stop.
-            if (numLocalPrimes < MAX_LOCAL_PRIMES) {
-                localPrimes[numLocalPrimes++] = candidate;
-                return;
+            // if the candidate is locally prime
+            if (isLocalPrime(candidate)){
+                // if nextActor is null, then add a new Actor to hold candidate
+                if (nextActor == null){
+                    nextActor = new SieveActorActor(candidate);
+                } else { // let nextActor to decide
+                    nextActor.send(msg);
+                }
             }
 
-            // No room, send the candidate down the chain.
-            if (nextActor == null) {
-                nextActor = new SieveActorActor();
-            }
-
-            nextActor.send(msg);
         }
 
         boolean isLocalPrime(int candidate) {
-            for (int i = 0; i < numLocalPrimes; i++) {
-                // If the candidate divides on anything from local store,
-                // it's not a prime.
-                if (candidate % localPrimes[i] == 0) {
-                    return false;
-                }
-            }
-
-            return true;
+            return candidate % localPrime != 0;
         }
     }
 }
